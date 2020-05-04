@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Video Depth Map</title>
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Quattrocento" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+
+    <!-- stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+    <style>
+      #bkgd{
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      }
+      #overlay{
+        background-color: black;
+        z-index: 40;
+        border: 1px solid white;
+        border-radius: 5px;
+        margin: 1em;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <nav id="nav">
+      <div class="NavDrop"><p class="NavItem" href="./web-projects/movement">more</p>
+        <ul class=NavDropList>
+          <li><a class="NavDropItem" href="./one">then</a></li>
+          <li><a class="NavDropItem" href="./now">now</a></li>
+          <li><a class="NavDropItem" href="./here">here</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="overlay" class="center">
+      <p>this is best experienced with headphones.</p>
+      <div class="flexCenter"><button id="startButton" class="center">Click to start video and audio</button></div>
+    </div>
+
+    <p>loading...</p>
+
+    <canvas id="bkgd"></canvas>
+
+
+    <div style="display: none">
+      <video loop src="./timesSquare.m4v" alt="Waves"></video>
+    </div>
+
+    <script src="./bkgd.js"></script>
+  </body>
+</html>
