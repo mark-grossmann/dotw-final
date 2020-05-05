@@ -1,33 +1,40 @@
+let src;
 // set variables
 let camera, scene, renderer, controls, mesh, light, geometry, vidTexture;
-const video = document.querySelector('#webcam');
+const video = document.querySelector('video');
 
 if (navigator.mediaDevices.getUserMedia) {
-  // using code from https://www.kirupa.com/html5/accessing_your_webcam_in_html5.htm to get the web cam into the video.
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(function (stream) {
-      video.srcObject = stream;
-    })
-    .catch(function (err0r) {
-      console.log("Something went wrong!");
-    });
-}
+   navigator.mediaDevices.getUserMedia (
+      // constraints: audio and video for this app
+      {
+         audio: true,
+         video: false
+      }).then(function(stream) {
+        var options = {
+          mediaStream : stream
+        }
 
-const audio = document.querySelector('#audio');
+        src = new MediaStreamAudioSourceNode(audioCtx, options);
+        src.connect(analyser); // connect source to analyser
+      }).catch(function(err) {
+       console.log('The following gUM error occured: ' + err);
+      });
+} else {
+  console.log('new getUserMedia not supported on your browser!');
+}
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-let src = audioCtx.createMediaElementSource(audio); // turn audio tag audio into source
+
 const analyser = audioCtx.createAnalyser();
-src.connect(analyser); // connect source to analyser
+
 analyser.connect(audioCtx.destination); // to output
 
 analyser.smoothingTimeConstant = 0.5;
 
-let start = document.querySelectorAll("button")[0];
+let start = document.getElementById('startButton');
 start.addEventListener('click', function() {
   audioCtx.resume();
-  audio.play();
   // remove overlay
   document.getElementById('overlay').remove();
 });
@@ -162,13 +169,7 @@ function animate() {
   }else{
     mesh.position.y = 0;
   }
-  //mesh.position.z = Math.sin(fftData[0]) * 100;
-
-  // camera animation
-  // let date = new Date(); // get date string
-  // let timer = date.getTime() * 0.0002; // get time string, changing speed
-  // camera.position.x = 800 * Math.cos(timer); // multiplier changes X coordinate
-  // camera.position.z = 800 * Math.sin(timer); // multiplier changes Z coordinate
+  
   requestAnimationFrame(animate);
 }
 
@@ -177,3 +178,10 @@ window.addEventListener('load', () => {
   vertices();
   animate();
 })
+
+window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize(){
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}

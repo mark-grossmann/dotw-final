@@ -158,13 +158,7 @@ function animate() {
   }else{
     mesh.position.y = 0;
   }
-  //mesh.position.z = Math.sin(fftData[0]) * 100;
 
-  // camera animation
-  // let date = new Date(); // get date string
-  // let timer = date.getTime() * 0.0002; // get time string, changing speed
-  // camera.position.x = 800 * Math.cos(timer); // multiplier changes X coordinate
-  // camera.position.z = 800 * Math.sin(timer); // multiplier changes Z coordinate
   requestAnimationFrame(animate);
 }
 
@@ -173,3 +167,10 @@ window.addEventListener('load', () => {
   vertices();
   animate();
 })
+
+window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize(){
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
